@@ -1,0 +1,22 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated archives
+*.zip
+*.tar.gz
+
+# Temp files
+*.tmp
+*.swp
+*.swo
+
+# Shell logs
+*.log
+
+# Go build outputs if example projects are generated later
+bin/
+dist/
+coverage.out
