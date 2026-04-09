@@ -10,7 +10,7 @@
 - **强调 Laravel -> Go 对照迁移**，更容易上手
 - **默认采用 Gin + GORM + JWT** 的常见工程组合
 - **兼顾教学与落地**，既能解释，也能生成结构化代码
-- **已经具备 references / templates / scripts / tests 骨架**，适合持续演进
+- **已经具备 references / templates / scripts / demo / tests 骨架**，适合持续演进
 
 ## 适合谁
 
@@ -27,29 +27,89 @@
 - 把 Laravel 的模型、控制器、请求验证、路由翻译成 Go 写法
 - 生成 Gin + GORM + JWT 的登录注册示例
 - 生成标准 RESTful CRUD 模块骨架
+- 生成 Laravel User/Auth 迁移骨架
 - 清晰解释 PHP 与 Go 的架构差异与取舍
 - 提醒 PHP 开发者转 Go 时常见的坑
 - 提供可复用的 starter 模板、代码片段和参考文档
 
-## 默认技术栈
+## 功能矩阵
 
-- Gin
-- GORM v2
-- JWT
-- Zap
-- Viper
-- Validator
-- Docker（可选）
+| 能力 | 当前状态 | 说明 |
+|---|---|---|
+| Laravel -> Go 架构讲解 | ✅ | 已具备 references / examples 支撑 |
+| Gin + GORM + JWT starter 模板 | ✅ | 已可生成完整认证起步项目 |
+| starter 生成脚本 | ✅ | `scripts/init_gin_gorm_jwt.sh` |
+| CRUD 模块模板 | ✅ | 标准资源骨架已具备 |
+| CRUD 生成脚本 | ✅ | `scripts/generate_crud.sh` |
+| Laravel User/Auth 迁移模板 | ✅ | 已具备模板组 |
+| Laravel User 迁移脚本 | ✅ | `scripts/translate_laravel_user.sh` |
+| demo 项目 | ✅ | 已展示 starter + CRUD 联动 |
+| 自动挂接主 router | ⏳ | 还可继续增强 |
+| 更完整的 demo 业务逻辑 | ⏳ | 还可继续补字段与路由接入 |
 
-## 快速了解
+## 快速开始
+
+### 1. 浏览仓库结构
+
+```text
+php-to-go-helper/
+├── SKILL.md
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+├── .gitignore
+├── references/
+├── templates/
+├── scripts/
+├── examples/
+├── tests/
+└── demo/
+```
+
+### 2. 生成一个 Gin + GORM + JWT starter 项目
+
+```bash
+./scripts/init_gin_gorm_jwt.sh /tmp/demo-app github.com/acme/demo demo-app demo_app
+```
+
+### 3. 往 starter 里继续生成 CRUD 模块
+
+```bash
+./scripts/generate_crud.sh /tmp/demo-app/internal Product products Products product
+```
+
+### 4. 生成 Laravel User/Auth 迁移骨架
+
+```bash
+./scripts/translate_laravel_user.sh /tmp/demo-app github.com/acme/demo App\\Models\\User User
+```
+
+### 5. 关于覆盖保护
+
+所有生成脚本默认都会阻止覆盖已存在文件。
+
+如果你确认要覆盖，必须显式加：
+
+```bash
+--force
+```
+
+例如：
+
+```bash
+./scripts/init_gin_gorm_jwt.sh --force /tmp/demo-app github.com/acme/demo demo-app demo_app
+```
+
+## 快速理解当前仓库
 
 当前仓库已经不是只有一个 `SKILL.md` 的说明型 skill，而是一个带有完整扩展骨架的版本，包含：
 
 - **参考资料**：统一迁移思路和项目约定
 - **模板目录**：沉淀高频代码结构
-- **脚本目录**：为后续自动化生成留好入口
+- **脚本目录**：可以真实生成 starter / CRUD / User 迁移骨架
 - **示例目录**：帮助稳定风格和输出方式
 - **测试目录**：用于回归核对输入和预期输出
+- **demo 目录**：展示模板与脚本的真实产物
 
 ## 仓库结构
 
@@ -57,6 +117,7 @@
 php-to-go-helper/
 ├── SKILL.md
 ├── README.md
+├── CHANGELOG.md
 ├── LICENSE
 ├── .gitignore
 ├── references/
@@ -67,7 +128,8 @@ php-to-go-helper/
 │   └── snippets/
 ├── scripts/
 ├── examples/
-└── tests/
+├── tests/
+└── demo/
 ```
 
 ## 目录导航
@@ -122,18 +184,20 @@ skill 的核心契约文件，定义：
 ### `scripts/`
 让这个 skill 更具操作性的辅助脚本目录。
 
-当前脚本主要是脚手架占位，用于：
+当前脚本包括：
 - 初始化 starter 项目
 - 生成 CRUD 模块
-- 翻译 Laravel User
-- 格式化项目
-- 验证项目
+- 翻译 Laravel User/Auth 模块
+- 公共模板渲染与辅助函数
 
 ### `examples/`
 人类可读的案例说明，用来稳定输出风格、结构和迁移方式。
 
 ### `tests/`
 用于回归核对的输入样例和预期输出。
+
+### `demo/`
+展示模板和脚本真实生成出来的项目结果。
 
 ## 中文使用示例
 
@@ -147,6 +211,19 @@ skill 的核心契约文件，定义：
 - “参考 Laravel 的 FormRequest，改写成 Go 的 request DTO 和校验结构”
 - “把 Laravel 的用户认证流程翻译成 Gin + GORM + JWT 版本”
 
+## Demo 说明
+
+当前已经包含一个真实 demo：
+
+- `demo/gin-gorm-jwt-demo/`
+
+它展示了两件事：
+
+1. starter 模板可以真实生成一个 Gin + GORM + JWT 项目
+2. CRUD 生成器可以继续往这个项目里追加 `Product` 资源模块骨架，并已接入主路由
+
+这意味着仓库已经具备“从起步项目到继续扩资源模块”的展示能力。
+
 ## 设计目标
 
 这个 skill 不只是用来解释概念，它希望同时具备这些能力：
@@ -156,6 +233,7 @@ skill 的核心契约文件，定义：
 - 代码生成
 - 脚手架搭建
 - 可重复的项目结构输出
+- 从讲解型 skill 逐步进化为工程型 skill
 
 ## 当前状态
 
@@ -166,25 +244,39 @@ skill 的核心契约文件，定义：
 - scripts
 - examples
 - tests
+- demo
+- changelog
 
-其中部分模板和脚本目前还是轻量占位版本，这样做是为了先把目录结构和职责边界稳定下来，再逐步补齐自动化能力。
+其中有些模板和生成器已经可用，有些能力还处于可继续增强阶段，但整体已经具备对外展示和持续迭代的基础。
+
+## Roadmap
+
+接下来适合继续推进的方向：
+
+- [ ] 自动把 CRUD 路由挂接到主 router
+- [ ] 让 demo 中的 Product 模块继续扩展 create / update / delete
+- [ ] 为资源模板补更完整字段和分页逻辑
+- [ ] 增加 refresh token 相关模板
+- [ ] 增加 Swagger / OpenAPI 示例
+- [ ] 增加更真实的 Laravel -> Go 迁移案例
+- [ ] 增加更多资源类型示例（Article / Advertisement / Order）
 
 ## 推荐下一步
 
-如果你想让这个仓库马上更强，优先建议继续做这几件事：
+如果你希望继续增强这个 skill，优先建议：
 
-1. 把 `templates/gin-gorm-jwt-starter/` 填成真正可运行的 starter
-2. 把 `scripts/generate_crud.sh` 实现成真实可用的生成器
-3. 补充更完整的 Laravel -> Go 映射参考文档
-4. 增加一个由模板生成出来的顶层示例项目
-5. 增加 `go fmt`、`go test`、`go vet` 的验证脚本
+1. 让 demo 中的 Product 模块继续补 create / update / delete
+2. 为 CRUD 模板补充更真实的字段和分页结构
+3. 增加一个从 Laravel 模块到 Go 模块的完整迁移案例
+4. 为脚本补充更强的覆盖保护提示和冲突提示
 
 ## 发布建议
 
-如果你想把这个仓库直接作为 GitHub 仓库长期维护，推荐保持仓库根目录直接包含这些内容：
+如果你想把这个仓库作为 GitHub 仓库长期维护，推荐保持仓库根目录直接包含这些内容：
 
 - `SKILL.md`
 - `README.md`
+- `CHANGELOG.md`
 - `LICENSE`
 - `.gitignore`
 - `references/`
@@ -192,6 +284,7 @@ skill 的核心契约文件，定义：
 - `scripts/`
 - `examples/`
 - `tests/`
+- `demo/`
 
 ## License
 

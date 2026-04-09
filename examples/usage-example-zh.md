@@ -1,12 +1,12 @@
 # 中文使用示例
 
-下面是一些适合触发 `php-to-go-helper` 的中文请求示例。
+下面是一些适合触发 `php-to-go-helper` 的中文请求示例，风格尽量保持明确、可执行、便于稳定输出。
 
 ## Laravel 模型迁移
 
 - 帮我把 Laravel 的 User 模型翻译成 Gin + GORM 版本
 - 把这个 Eloquent 模型改写成 Go struct，并补上 GORM 标签
-- 参考 Laravel 的 fillable 和 casts，生成对应的 Go 模型
+- 参考 Laravel 的 `fillable` 和 `casts`，生成对应的 Go 模型
 
 ## 登录注册
 
@@ -44,4 +44,4 @@
 
 ## 一个更完整的提问示例
 
-> 请使用 Gin + GORM + JWT，把 Laravel 的 User 模型和登录注册流程翻译成 Go，要求包含项目结构、完整代码、运行命令、以及 PHP 与 Go 的对照说明。
+> 请使用 Gin + GORM + JWT，把 Laravel 的 User 模型和登录注册流程翻译成 Go，要求包含项目结构、完整代码、运行命令，以及 PHP 与 Go 的对照说明。
